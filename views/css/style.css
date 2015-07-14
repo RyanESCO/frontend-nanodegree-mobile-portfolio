@@ -14,7 +14,7 @@ body {
 
 input {
   background: grey;
-  font-size: 30px;
+  font-size: 18px;
 }
 
 form {
@@ -33,6 +33,7 @@ form {
   position: fixed;
   width: 256px;
   z-index: -1;
+  backface-visibility: hidden;  /*Force each pizza to have its own composite layer*/
 }
 
 .randomPizzaContainer {

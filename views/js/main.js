@@ -469,7 +469,7 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
-for (var i = 2; i < 100; i++) {
+for (var i = 2; i < 200; i++) {
   var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
@@ -498,13 +498,26 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Moves the sliding background pizzas based on scroll position
+
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
+  var items = document.getElementsByClassName('mover');
+  
+
+  //calculate the phases once instead of multiple times
+  var phase0 = Math.sin((document.body.scrollTop / 1250));
+  var phase1 = Math.sin((document.body.scrollTop / 1250) + (1));
+  var phase2 = Math.sin((document.body.scrollTop / 1250) + (2));
+  var phase3 = Math.sin((document.body.scrollTop / 1250) + (3));
+  var phase4 = Math.sin((document.body.scrollTop / 1250) + (4));
+  var phaseArray = [phase0, phase1, phase2, phase3, phase4];
+  
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+	  
+    //var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+	var phase = phaseArray[i%5];
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -525,7 +538,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 8; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
