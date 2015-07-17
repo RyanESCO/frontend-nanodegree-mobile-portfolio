@@ -448,12 +448,13 @@ var resizePizzas = function(size) {
     return dx;
   }
 
-  // Iterates through pizza elements on the page and changes their widths
+  // Iterates through pizza elements on the page and changes their width  
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+	var pizzaGroup = document.getElementsByClassName('randomPizzaContainer');
+	var dx = determineDx(pizzaGroup[0], size);
+	var newwidth = (pizzaGroup[0].offsetWidth + dx) + 'px';
+    for (var i = 0; i < pizzaGroup.length; i++) {
+      pizzaGroup[i].style.width = newwidth;
     }
   }
 
@@ -507,17 +508,17 @@ function updatePositions() {
   
 
   //calculate the phases once instead of multiple times
-  var phase0 = Math.sin((document.body.scrollTop / 1250));
-  var phase1 = Math.sin((document.body.scrollTop / 1250) + (1));
-  var phase2 = Math.sin((document.body.scrollTop / 1250) + (2));
-  var phase3 = Math.sin((document.body.scrollTop / 1250) + (3));
-  var phase4 = Math.sin((document.body.scrollTop / 1250) + (4));
+  
+  var scrollValue = (document.body.scrollTop / 1250);
+  var phase0 = Math.sin(scrollValue);
+  var phase1 = Math.sin(scrollValue + (1));
+  var phase2 = Math.sin(scrollValue + (2));
+  var phase3 = Math.sin(scrollValue + (3));
+  var phase4 = Math.sin(scrollValue + (4));
   var phaseArray = [phase0, phase1, phase2, phase3, phase4];
   
   for (var i = 0; i < items.length; i++) {
-	  
-    //var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-	var phase = phaseArray[i%5];
+	  var phase = phaseArray[i%5];
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -538,7 +539,9 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 8; i++) {
+  var numPizzas = Math.floor(cols * (screen.height/s));
+  console.log(numPizzas);
+  for (var i = 0; i < numPizzas; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
