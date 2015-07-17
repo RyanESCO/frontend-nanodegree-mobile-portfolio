@@ -450,9 +450,12 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their width  
   function changePizzaSizes(size) {
+	
+	//pull these three variables out of for loop to only calculate once instead of every iteration, also change to getElementsByClassName
 	var pizzaGroup = document.getElementsByClassName('randomPizzaContainer');
 	var dx = determineDx(pizzaGroup[0], size);
 	var newwidth = (pizzaGroup[0].offsetWidth + dx) + 'px';
+	
     for (var i = 0; i < pizzaGroup.length; i++) {
       pizzaGroup[i].style.width = newwidth;
     }
@@ -470,8 +473,10 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+//pull this out of for loop, you don't need to assign this variable every iteration
+var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 200; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
+  
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -508,13 +513,13 @@ function updatePositions() {
   
 
   //calculate the phases once instead of multiple times
-  
   var scrollValue = (document.body.scrollTop / 1250);
   var phase0 = Math.sin(scrollValue);
   var phase1 = Math.sin(scrollValue + (1));
   var phase2 = Math.sin(scrollValue + (2));
   var phase3 = Math.sin(scrollValue + (3));
   var phase4 = Math.sin(scrollValue + (4));
+  //create an array for convenient access with for loop 
   var phaseArray = [phase0, phase1, phase2, phase3, phase4];
   
   for (var i = 0; i < items.length; i++) {
@@ -539,6 +544,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
+  //calculate the number of pizzas based on screen size, so you aren't creating excess pizzas that won't display on the screen and that will slow down perfermance
   var numPizzas = Math.floor(cols * (screen.height/s));
   console.log(numPizzas);
   for (var i = 0; i < numPizzas; i++) {
